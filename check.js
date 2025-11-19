@@ -128,22 +128,22 @@ bar();
 
 //! shallow and deep copy
 
-const original = {
-  name: 'John',
-  age: 25,
-  address: {
-    city: 'New York',
-    country: 'USA',
-  },
-  hobbies: ['reading', 'gaming'],
-};
+// const original = {
+//   name: 'John',
+//   age: 25,
+//   address: {
+//     city: 'New York',
+//     country: 'USA',
+//   },
+//   hobbies: ['reading', 'gaming'],
+// };
 
-const shallow1 = { ...original };
+// const shallow1 = { ...original };
 
-const shallow2 = Object.assign({}, original);
+// const shallow2 = Object.assign({}, original);
 
-let arr = [1, 2, 3, [4, 5]];
-const shallow3 = arr.slice();
+// let arr = [1, 2, 3, [4, 5]];
+// const shallow3 = arr.slice();
 
 //! express js server
 
@@ -227,6 +227,11 @@ const shallow3 = arr.slice();
 // }
 
 //! use Reducer syntax
+// function reducer(state, aciton) {
+//   switch (aciton.type) {
+//     case 'increment':
+//   }
+// }
 // const [state, dispatch] = useReducer(reducer,initialState);
 
 //! multer file upload
@@ -262,3 +267,41 @@ const shallow3 = arr.slice();
 //! password encryption
 //bcrypt, argon, passport
 // bcrypt.hash('password', salt);
+
+//! useEffect
+
+// const ExampleComponent = () => {
+//   const [count, setCount] = useState(0);
+
+//   useEffect(() => {
+//     document.title = `You clicked ${count} times`;
+//   }, [count]);
+
+//   return (
+//     <div>
+//       <p>You clicked {count} times</p>
+//       <button onClick={() => setCount(count + 1)}>Click me</button>{' '}
+//     </div>
+//   );
+// };
+
+//! adding function in prototype
+
+// Array.prototype.customMap = function (cb) {
+//   const result = [];
+
+//   for (let i = 0; i < this.length; i++) {
+//     result.push(cb(this[i], i, this));
+//   }
+//   return result;
+// };
+
+// //? example
+// const numbers = [1, 2, 3, 4, 5];
+// const doubled = numbers.customMap((e) => e * 2);
+// console.log(doubled);
+
+// const square = numbers.customMap((num, index) => {
+//   return `Index ${index}: ${num * num}`;
+// });
+// console.log(square);
