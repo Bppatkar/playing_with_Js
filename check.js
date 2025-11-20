@@ -331,3 +331,35 @@ bar();
 //     </div>
 //   );
 // };
+
+//! streams in node js
+// const fs = require('fs');
+// const { Transform, Duplex } = require('stream');
+
+// const readableStream = fs.createReadStream('example.txt', 'utf-8');
+// const transformStream = new Transform();
+
+// transformStream._transform = function (chunk, encoding, cb) {
+//   const upperCase = chunk.toString().toUpperCase();
+//   cb(null, upperCase);
+// };
+
+// const writableStream = fs.createWriteStream('result.txt');
+
+// const duplexStream = new Duplex({
+//   read(size) {},
+
+//   write(chunk, encoding, cb) {
+//     console.log('Processing that data', chunk.toString());
+//     this.push(chunk);
+//     cb();
+//   },
+// });
+
+// readableStream
+//   .pipe(duplexStream)
+//   .pipe(transformStream)
+//   .pipe(writableStream)
+//   .on('finish', () => {
+//     console.log('All process is complete');
+//   });
