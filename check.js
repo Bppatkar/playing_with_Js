@@ -363,3 +363,79 @@ bar();
 //   .on('finish', () => {
 //     console.log('All process is complete');
 //   });
+
+//! callback hell and pyramid of doom
+
+// const heading1 = document.getElementById('heading1');
+// const heading2 = document.getElementById('heading2');
+// const heading3 = document.getElementById('heading3');
+// const heading4 = document.getElementById('heading4');
+// const heading5 = document.getElementById('heading5');
+// const heading6 = document.getElementById('heading6');
+// const heading7 = document.getElementById('heading7');
+// const heading8 = document.getElementById('heading8');
+// const heading9 = document.getElementById('heading9');
+// const heading10 = document.getElementById('heading10');
+
+// setTimeout(() => {
+//   heading1.textContent = 'text1';
+//   heading1.color = 'red';
+//   setTimeout(() => {
+//     heading1.textContent = 'text1';
+//     heading1.color = 'red';
+//     setTimeout(() => {
+//       heading1.textContent = 'text1';
+//       heading1.color = 'red';
+//       setTimeout(() => {
+//         heading1.textContent = 'text1';
+//         heading1.color = 'red';
+//         setTimeout(() => {
+//           heading1.textContent = 'text1';
+//           heading1.color = 'red';
+//           setTimeout(() => {
+//             heading1.textContent = 'text1';
+//             heading1.color = 'red';
+//           }, 6000);
+//         }, 5000);
+//       }, 4000);
+//     }, 3000);
+//   }, 2000);
+// }, 1000);
+
+// const delay = (ms) => new Promise((resolve) => setTimeout((resolve, ms)));
+
+// //? example 2
+// doSomething((result1) => {
+//   doSomethingElse((result2) => {
+//     doAnotherThing((result3) => {
+//       doFinalThing((result4) => {
+//         console.log('all things done', result4);
+//       });
+//       console.log('all things done', result3);
+//     });
+//     console.log('all things done', result2);
+//   });
+//   console.log('all things done', result1);
+// });
+
+// //* solution of example 2 promise 
+// doSomething()
+//   .then((result1) => doSomethingElse(result1))
+//   .then((result2) => doAnotherThing(result2))
+//   .then((result3) => doAnotherThing(result3))
+//   .then((result4) => doFinalThing(result4))
+//   .catch((err) => console.error(err));
+
+// //* solution of example 2 usnig async await
+// async function processTask() {
+//   try {
+//     const result1 = await doSomething();
+//     const result2 = await doSomethingElse();
+//     const result3 = await doAnotherThing();
+//     const result4 = await doFinalThing();
+//     console.log('All done');
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+// processTask();
