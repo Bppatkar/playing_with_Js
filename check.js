@@ -418,7 +418,7 @@ bar();
 //   console.log('all things done', result1);
 // });
 
-// //* solution of example 2 promise 
+// //* solution of example 2 promise
 // doSomething()
 //   .then((result1) => doSomethingElse(result1))
 //   .then((result2) => doAnotherThing(result2))
@@ -439,3 +439,244 @@ bar();
 //   }
 // }
 // processTask();
+
+//! diff btw process.nextTick() and setImmediate()?
+// setImmediate(() => console.log('I run immediately'));
+// process.nextTick(() => console.log('But I run before that'));
+
+// let count = 0;
+// const cb = () => {
+//   console.log(`Processing nextTick cb ${++count}`);
+//   process.nextTick(cb);
+// };
+// setImmediate(() => console.log('setImmediate is called'));
+// setTimeout(() => console.log('setTimeout executed'), 100);
+// process.nextTick(cb);
+// console.log('Start');
+
+//! server using express
+// import { express } from 'express';
+// const app = express();
+// const PORT = 3000;
+
+// app.get('/', (req, res) => {
+//   res.json({ message: 'job done', status: 200 });
+// });
+
+// app.listen(PORT, () => {
+//   console.log('Our server is running....');
+// });
+
+//! custome error in express js
+
+// class NotFoundError extends Error {
+//   constructor(message) {
+//     super(message);
+//     this.status = 404;
+//     this.name = 'Not Found Eror';
+//   }
+// }
+
+// app.get('non_existingPage', (req, res, next) => {
+//   next(new NotFoundError('Page not found...'));
+// });
+
+//! authenticaiton and authrization using express js
+// import { express } from 'express';
+// import jwt from 'jsonwebtoken';
+// const app = express();
+// const PORT = 3000;
+
+// app.use(express.json());
+// const SECRET_KEY = 'secret_key';
+
+// const user = {
+//   id: Math.random() + 1 * 10,
+//   userName: 'username',
+//   userPass: 'pass234',
+// };
+// app.post('/login', (req, res) => {
+//   try {
+//     const { userName, userPass } = req.body;
+//     if (!userName && !userPass) {
+//       return req.json({ message: 'all fields are required', status: 404 });
+//     }
+//     const user = await User.find(u=> u.userName === userName && u.userPass === userPass);
+//     if(!user){  return req.json({ message: 'user Not found', status: 404 });}
+
+//     const token = jwt.sign({userData: user.id},SECRET_KEY,{expiresIn: '1h'})
+//      res.json({
+//         message: 'Login successful',
+//         status: 200,
+//         token,
+//         user: { id: user.id, userName: user.userName }
+//       });
+//   } catch (error) {
+//     console.error('Login error:', error);
+//     res.status(500).json({
+//       message: 'Internal server error',
+//       status: 500
+//     });
+//   }
+// });
+
+// const authentiateTokem = (req,res, next)=>{
+//   const authHeader = req.headers['authorization'];
+//   const token = authHeader && authHeader.split(' ')[1]
+//   if(!token){
+//       return res.status(401).json({
+//       message: 'Access token required',
+//       status: 401
+//     });
+//   }
+
+//   jwt.verify(token, SECRET_KEY, (err, user)=>{
+//     if(err){
+//        return res.status(403).json({
+//         message: 'Invalid or expired token',
+//         status: 403
+//       });
+//     }
+//     req.user = user
+//     next()
+//   })
+// }
+
+// app.listen(PORT, () => {
+//   console.log('Our server is running....');
+// });
+
+//! mongodb database connection in node and express
+
+// const connectDb = async () => {
+//   try {
+//     await mongoose.connect(URL);
+//     console.log('database connected');
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+//! performing CRUD in moongoose ODM for User modal
+
+// const newUser = new User({ userName: 'bhanu', email: 'bhanu@gmail.com' });
+// newUser.save();
+// // or
+// const newUser1 = new User.create({
+//   userName: 'bhanu',
+//   email: 'bhanu@gmail.com',
+// });
+
+//? Read
+// User.find({ age: { $gt: 21 } })
+//   .then((user) => console.log(user))
+// .catch((err) => console.error(err));
+
+//? update
+// User.updateOne({ userName: 'bhanu' }, { $set: { age: 20 } })
+//   .then((user) => console.log(user))
+//   .catch((err) => console.error(err));
+
+// User.findByIdAndUpdate(
+//   'bibgf23r',
+//   { email: 'newEmail@gmail.com' },
+//   { new: true }
+// )
+//   .then((user) => console.log(user))
+//   .catch((err) => console.error(err));
+
+//? delete
+// User.deleteOne({ username: 'john_doe' })
+//   .then((result) => console.log('Delete result:', result))
+//   .catch((err) => console.error(err));
+
+//! mongodb index
+
+// const userSchema = new mongoose.Schema(
+//   {
+//     email: {
+//       type: string,
+//       required: true,
+//     },
+//     userName: {
+//       type: string,
+//     },
+//   },
+//   { timeStamp: true }
+// );
+
+// export const User = mongoose.model('User', UserSchema);
+// userSchema.index({ email: 1 });
+//
+
+//! population in mongodb
+// const postSchema = new mongoose.Schema(
+//   {
+//     title: {
+//       type: String,
+//       required: true,
+//     },
+//   },
+//   { timeStamp: true }
+// );
+// const Post = moongoose.model('Post', postSchema);
+
+// Post.findById('anyPostId')
+//   .populate('author', 'username email') // populate author field , select only 'username' and 'email
+//   .exec((err, post) => {
+//     if (err) console.error(err);
+//     else console.log(post);
+//     console.log(post.author.username); // Access user data directly
+//     console.log(post.author.email);
+//   });
+
+//! transactions in mongodb
+
+// const session = await mongoose.startSession();
+// session.startTransaction();
+
+// try {
+//   await Account.updateOne(
+//     { _id: 'AccountA' },
+//     { $inc: { balance: -100 } },
+//     { session }
+//   );
+//   await Account.updateOne(
+//     { _id: 'AccountB' },
+//     { $inc: { balance: 100 } },
+//     { session }
+//   );
+
+//   await session.commitTransactions();
+//   console.log('successfully transfered');
+// } catch (error) {
+//   await session.abortTransaction();
+//   console.error(error);
+// } finally {
+//   session.endSesssion();
+// }
+
+//! refrencing in mongodb
+// id:{
+//   type:mongoose.Schema.types.ObjectId;
+//   ref:
+// }
+
+//! serving static file in express
+// const path = require('path');
+// app.use(express.static(path.join(__dirname, 'public')));
+
+//! express router
+// import express from 'express';
+// const router = express.Router();
+// router.get('/about', aboutController);
+
+//! testing
+// describe('GET /api/item', () => {
+//   it('should return a list of items', async () => {
+//     const res = await requestAnimationFrame(app).get('api/items');
+//     expect(res.statusCode).toEqual(200);
+//     exprect(res.body).toBeInstanceOf(Array);
+//   });
+// });
+
