@@ -57,11 +57,13 @@ async function getTodoById(req, res) {
 
 async function updateTodo(req, res) {
   try {
-    const { title, description, isActive } = req.body;
-
-    const newUpdatedTodo = await Todo.findByIdAndUpdate(
-      { _id: req.params.id },
-      { title, description, isActive },
+    const todo = await Todo.findById(req.params.id);
+    if (!todo) {
+      return res.status(404).json({ message: 'Todo not found' });
+    }
+    const newUpdatedTodo = await Todo.findOneAndUpdate(
+      { _id: todo._id },
+      req.body,
       { new: true }
     );
     if (!newUpdatedTodo) {
