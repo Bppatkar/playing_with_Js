@@ -19,5 +19,7 @@ const todoSchema = mongoose.Schema(
   { timeStamps: true }
 );
 
+todoSchema.index({ title: 1 });
+
 const Todo = mongoose.model('Todo', todoSchema);
 export default Todo;
