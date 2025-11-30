@@ -10,7 +10,8 @@ import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.route('/').get(auth, getAllTodos);
+// Handle both with and without trailing slash
+router.route(['/', '']).get(auth, getAllTodos);
 router.route('/add').post(auth, addTodo);
 router.route('/:id').get(auth, getTodoById);
 router.route('/update/:id').patch(auth, updateTodo);

@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const ProtectedRoute = () => {
-  const { token, user, loading } = useAuth();
+  const { token, loading } = useAuth();
 
   // console.log('ProtectedRoute - token:', token);
   // console.log('ProtectedRoute - user:', user);
@@ -28,7 +28,11 @@ const ProtectedRoute = () => {
   }
 
   if (!token) {
-    console.log('No token found, redirecting to login');
+    console.log('❌ No token found in context, redirecting to login');
+    console.log('🔍 localStorage content:', {
+      token: localStorage.getItem('token'),
+      length: localStorage.length,
+    });
     return <Navigate to="/login" replace />;
   }
 

@@ -3,10 +3,7 @@ import Todo from '../models/todo.models.js';
 async function getAllTodos(req, res) {
   try {
     const todos = await Todo.find({ user: req.user }).sort({ createdAt: -1 });
-    if (!todos || todos.length == 0) {
-      return res.status(404).json([]);
-    }
-    return res.status(200).json(todos);
+    return res.status(200).json(todos || []);
   } catch (error) {
     console.log('Error in getAllTodos controller:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -19,7 +16,10 @@ async function addTodo(req, res) {
     if (!title || !description || !isActive === undefined) {
       return res.status(404).json({ message: 'all fields are required' });
     }
-    const existingTodo = await Todo.findOne({ title, user: req.user });
+    const existingTodo = await Todo.findOne({
+      title: title.trim(),
+      user: req.user,
+    });
     if (existingTodo) {
       return res.status(400).json({ message: 'Use other Title' });
     }

@@ -13,7 +13,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
-app.use('/api/v1', todoRouter);
+app.use('/api/v1/todos', todoRouter);
 app.use('/api/v1/users', userRouter); //- /api/v1/users/auth/me
 
 app.get('/', (req, res) => {

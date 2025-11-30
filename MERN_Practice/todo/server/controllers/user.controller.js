@@ -57,13 +57,17 @@ export const loginController = async (req, res) => {
       email: validateData.email.toLowerCase(),
     });
     if (!user) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
+      return res
+        .status(400)
+        .json({ success: false, msg: 'Invalid credentials' });
     }
 
     // compare pass
     const isMatch = await bcrypt.compare(validateData.password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
+      return res
+        .status(400)
+        .json({ success: false, msg: 'Invalid credentials' });
     }
 
     const token = generateToken(user._id);
@@ -81,21 +85,95 @@ export const loginController = async (req, res) => {
       return res.status(400).json({ errors: error.issues });
     }
     console.error(error.message);
-    res.status(500).send('Server error');
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+    });
   }
 };
 
 export const getMeController = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user).select('-password');
 
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
 
-    res.json({ success: true, user });
+    res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (error) {
     console.error('Error in getMeController:', error.message);
-    res.status(500).send('Server error during token check');
+    res.status(500).json({
+      success: false,
+      message: 'Server error during token check',
+    });
+  }
+};
+
+export const updateProfileController = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const user = await User.findById(req.user);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error('Error in updateProfile controller:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+};
+
+export const deleteAccountController = async (req, res) => {
+  try {
+    const user = await User.findById(req.user);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    await User.findByIdAndDelete(req.user);
+
+    res.status(200).json({
+      success: true,
+      message: 'Account deleted successfully',
+    });
+  } catch (error) {
+    console.error('Error in deleteAccount controller:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
   }
 };

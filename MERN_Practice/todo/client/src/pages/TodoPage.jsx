@@ -14,20 +14,27 @@ const TodoPage = () => {
   const navigate = useNavigate();
 
   const fetchTodos = useCallback(async () => {
-    if (!token) return;
-    
+    if (!token) {
+      setError('No authentication token found');
+      return;
+    }
+
     setLoading(true);
     setError(null);
-    
+
     try {
-      const response = await todoApi.getAllTodo(token);
+      const response = await todoApi.getAllTodo();
       setTodos(response.data);
     } catch (error) {
       console.error('Error fetching todos:', error);
-      
+
       if (error.response?.status === 401) {
+        setError('Session expired. Please login again.');
         logout();
         navigate('/login');
+      } else if (error.response?.status === 404) {
+        // No todos found is okay, set empty array
+        setTodos([]);
       } else {
         setError(error.response?.data?.message || 'Failed to fetch todos');
       }
@@ -42,7 +49,7 @@ const TodoPage = () => {
 
   const handleAddTodo = async (newTodo) => {
     try {
-      const response = await todoApi.addTodo(newTodo, token);
+      const response = await todoApi.addTodo(newTodo);
       setTodos((prev) => [response.data.newTodo, ...prev]);
     } catch (error) {
       console.error('Error adding todo:', error);
@@ -52,7 +59,7 @@ const TodoPage = () => {
 
   const handleUpdateTodo = async (id, updatedData) => {
     try {
-      const response = await todoApi.updateTodo(id, updatedData, token);
+      const response = await todoApi.updateTodo(id, updatedData);
       setTodos((prevTodos) =>
         prevTodos.map((todo) => (todo._id === id ? response.data.todo : todo))
       );
@@ -64,7 +71,7 @@ const TodoPage = () => {
 
   const handleDeleteTodo = async (id) => {
     try {
-      await todoApi.deleteTodo(id, token);
+      await todoApi.deleteTodo(id);
       setTodos((prev) => prev.filter((todo) => todo._id !== id));
     } catch (error) {
       console.error('Error deleting todo:', error);
@@ -79,14 +86,16 @@ const TodoPage = () => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '2rem',
-        paddingBottom: '1rem',
-        borderBottom: '2px solid #ddd'
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '2rem',
+          paddingBottom: '1rem',
+          borderBottom: '2px solid #ddd',
+        }}
+      >
         <div>
           <h1 style={{ margin: 0 }}>My Todo List</h1>
           {user && (
@@ -119,16 +128,18 @@ const TodoPage = () => {
       )}
 
       {error && (
-        <div style={{ 
-          color: 'red', 
-          padding: '1rem', 
-          marginBottom: '1rem',
-          border: '1px solid red',
-          borderRadius: '4px',
-          backgroundColor: '#fee'
-        }}>
+        <div
+          style={{
+            color: 'red',
+            padding: '1rem',
+            marginBottom: '1rem',
+            border: '1px solid red',
+            borderRadius: '4px',
+            backgroundColor: '#fee',
+          }}
+        >
           {error}
-          <button 
+          <button
             onClick={fetchTodos}
             style={{
               marginLeft: '1rem',

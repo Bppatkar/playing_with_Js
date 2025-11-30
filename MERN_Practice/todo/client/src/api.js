@@ -37,50 +37,41 @@ api.interceptors.response.use(
   }
 );
 
-const setAuthHeaders = (token) => {
-  return {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  };
-};
-
 export const todoApi = {
-  getAllTodo: async (token) => api.get('/', setAuthHeaders(token)),
-  getTodoById: async (id, token) => api.get(`/${id}`, setAuthHeaders(token)),
-  addTodo: async (data, token) => api.post('/add', data, setAuthHeaders(token)),
-  updateTodo: async (id, data, token) =>
-    api.patch(`/update/${id}`, data, setAuthHeaders(token)),
-  deleteTodo: async (id, token) =>
-    api.delete(`/delete/${id}`, setAuthHeaders(token)),
+  getAllTodo: async () => api.get('/todos/'),
+  getTodoById: async (id) => api.get(`/todos/${id}`),
+  addTodo: async (data) => api.post('/todos/add', data),
+  updateTodo: async (id, data) => api.patch(`/todos/update/${id}`, data),
+  deleteTodo: async (id) => api.delete(`/todos/delete/${id}`),
 };
 
 export const authApi = {
   login: async (credentials) => {
     // Remove any existing token before login
     localStorage.removeItem('token');
-    return api.post('/users/login', credentials);
+    const response = await api.post('/users/login', credentials);
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
+    }
+    return response;
   },
   register: async (credentials) => {
     localStorage.removeItem('token');
-    return api.post('/users/register', credentials);
-  },
-  getMe: async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('no token found');
+    const response = await api.post('/users/register', credentials);
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token);
     }
-    return api.get('/users/auth/me', setAuthHeaders(token));
+    return response;
   },
+  getMe: async () => api.get('/users/auth/me'),
+  updateProfile: async () => api.patch('/users/profile'),
+  deleteAccount: async () => api.patch('/users/delete'),
 };
 
 export const userApi = {
   getAllUser: async () => {},
   searchUser: async () => {},
   getProfile: async () => {},
-  updateProfile: async () => {},
-  deleteAccount: async () => {},
 };
 
 export default api;

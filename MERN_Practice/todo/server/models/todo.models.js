@@ -5,7 +5,6 @@ const todoSchema = mongoose.Schema(
     title: {
       type: String,
       required: true,
-      unique: true,
     },
     description: {
       type: String,
@@ -24,5 +23,6 @@ const todoSchema = mongoose.Schema(
   { timestamps: true }
 );
 
+todoSchema.index({ title: 1, user: 1 }, { unique: true });
 const Todo = mongoose.model('Todo', todoSchema);
 export default Todo;

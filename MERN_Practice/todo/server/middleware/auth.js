@@ -44,7 +44,7 @@ const auth = (req, res, next) => {
 
     req.user = decoded.id;
 
-    console.log('Auth Middleware - User ID attached:', req.user);
+    // console.log('Auth Middleware - User ID attached:', req.user);
 
     next();
   } catch (error) {
@@ -58,6 +58,7 @@ const auth = (req, res, next) => {
     }
 
     if (error.name === 'TokenExpiredError') {
+      localStorage.removeItem('token');
       return res.status(401).json({
         success: false,
         message: 'Token expired',
