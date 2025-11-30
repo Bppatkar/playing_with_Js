@@ -4,7 +4,7 @@ const auth = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
-    console.log('Auth Middleware - Authorization Header:', authHeader);
+    // console.log('Auth Middleware - Authorization Header:', authHeader);
 
     if (!authHeader) {
       return res.status(401).json({
@@ -29,11 +29,11 @@ const auth = (req, res, next) => {
       });
     }
 
-    console.log('Auth Middleware - Token:', token.substring(0, 20) + '...');
+    // console.log('Auth Middleware - Token:', token.substring(0, 20) + '...');
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    console.log('Auth Middleware - Decoded:', decoded);
+    // console.log('Auth Middleware - Decoded:', decoded);
 
     if (!decoded || !decoded.id) {
       return res.status(401).json({
