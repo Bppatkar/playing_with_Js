@@ -5,10 +5,6 @@ import { Navigate, Outlet } from 'react-router-dom';
 const ProtectedRoute = () => {
   const { token, user, loading } = useAuth();
 
-  // console.log('ProtectedRoute - token:', token);
-  // console.log('ProtectedRoute - user:', user);
-  // console.log('ProtectedRoute - loading:', loading);
-
   if (loading) {
     return (
       <div

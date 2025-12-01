@@ -33,7 +33,6 @@ const TodoPage = () => {
         logout();
         navigate('/login');
       } else if (error.response?.status === 404) {
-        // No todos found is okay, set empty array
         setTodos([]);
       } else {
         setError(error.response?.data?.message || 'Failed to fetch todos');
@@ -50,7 +49,6 @@ const TodoPage = () => {
   const handleAddTodo = async (newTodo) => {
     try {
       const response = await todoApi.addTodo(newTodo);
-      // console.log('✅ Todo added response:', response.data);
       setTodos((prev) => [...prev, response.data.newTodo]);
     } catch (error) {
       console.error('Error adding todo:', error);
@@ -80,90 +78,59 @@ const TodoPage = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem' }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '2rem',
-          paddingBottom: '1rem',
-          borderBottom: '2px solid #ddd',
-        }}
-      >
-        <div>
-          <h1 style={{ margin: 0 }}>My Todo List</h1>
-          {user && (
-            <p style={{ margin: '0.5rem 0 0 0', color: '#666' }}>
-              Welcome, {user.name}!
-            </p>
-          )}
-        </div>
-        <button
-          onClick={handleLogout}
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
-        >
-          Logout
-        </button>
-      </div>
-
-      <TodoForm onAdd={handleAddTodo} />
-
-      {loading && (
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
-          <p>Loading your todos...</p>
-        </div>
-      )}
-
-      {error && (
-        <div
-          style={{
-            color: 'red',
-            padding: '1rem',
-            marginBottom: '1rem',
-            border: '1px solid red',
-            borderRadius: '4px',
-            backgroundColor: '#fee',
-          }}
-        >
-          {error}
+    <div className="min-h-screen bg-background text-text-primary">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 pb-6 border-b border-border">
+          <div>
+            <h1 className="text-3xl lg:text-4xl font-semibold text-text-primary mb-2">
+              My Todo List
+            </h1>
+            {user && (
+              <p className="text-text-secondary text-lg">
+                Welcome back, <span className="text-primary">{user.name}</span>!
+              </p>
+            )}
+          </div>
           <button
-            onClick={fetchTodos}
-            style={{
-              marginLeft: '1rem',
-              padding: '5px 10px',
-              backgroundColor: '#dc3545',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
+            onClick={logout}
+            className="mt-4 lg:mt-0 px-6 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors duration-200 font-semibold border border-primary/20"
           >
-            Retry
+            Logout
           </button>
         </div>
-      )}
 
-      {!loading && !error && (
-        <TodoList
-          todos={todos}
-          onDelete={handleDeleteTodo}
-          onUpdate={handleUpdateTodo}
-        />
-      )}
+        <TodoForm onAdd={handleAddTodo} />
+
+        {loading && (
+          <div className="text-center py-12">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-text-secondary text-lg">Loading your todos...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-red-500/20 border border-red-500/50 text-red-300 px-6 py-4 rounded-lg mb-6">
+            <div className="flex justify-between items-center">
+              <span>{error}</span>
+              <button
+                onClick={fetchTodos}
+                className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        )}
+
+        {!loading && !error && (
+          <TodoList
+            todos={todos}
+            onDelete={handleDeleteTodo}
+            onUpdate={handleUpdateTodo}
+          />
+        )}
+      </div>
     </div>
   );
 };

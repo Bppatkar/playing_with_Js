@@ -3,6 +3,12 @@ import TodoPage from './pages/TodoPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import Header from './components/layout/Header.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import Footer from './components/layout/Footer.jsx';
+import Navigation from './components/layout/Navigation.jsx';
+import NewsPage from './pages/NewsPage.jsx';
+import CricketPage from './pages/CricketPage.jsx';
 
 function App() {
   return (
@@ -12,7 +18,24 @@ function App() {
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/" element={<TodoPage />} />
+        <Route
+          path="/*"
+          element={
+            <div className="min-h-screen bg-black text-white flex flex-col">
+              <Header />
+              <Navigation />
+              <main className="flex-1">
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/todos" element={<TodoPage />} />
+                  <Route path="/news" element={<NewsPage />} />
+                  <Route path="/cricket" element={<CricketPage />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          }
+        />
       </Route>
 
       {/* Fallback */}
