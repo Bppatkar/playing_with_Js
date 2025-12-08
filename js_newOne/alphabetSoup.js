@@ -8,8 +8,16 @@ Input: "hooplah"
 Output: ahhloop
 */
 
+// function AlphabetSoup(str) {
+//   let arr = str.trim().split('').sort().join('');
+//   return arr;
+// }
+
 function AlphabetSoup(str) {
-  let arr = str.split('')
+  return str
+    .split('')
+    .sort((a, b) => a.charCodeAt() - b.charCodeAt())
+    .join('');
 }
 
 console.log(AlphabetSoup('coderbyte'));
