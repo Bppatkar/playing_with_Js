@@ -6,6 +6,8 @@ function bar() {
 
 bar();
 
+
+//! promise
 // const data = { name: 'bhanu', age: 25, admin: false };
 // const fetchData = () => {
 //   let success = true;
