@@ -6,7 +6,6 @@ function bar() {
 
 bar();
 
-
 //! promise
 // const data = { name: 'bhanu', age: 25, admin: false };
 // const fetchData = () => {
@@ -720,3 +719,20 @@ bar();
 //   };
 // };
 
+//! function declartion
+function greet(name) {
+  return `Hello ${name}`;
+}
+
+//! function expression  // anonymouse or named
+const greet = function (name) {
+  return `Hello ${name}`;
+};
+
+//! Arrow function
+const greet = (name) => {
+  `Hello, ${name}`;
+};
+
+//! constructor function
+const greet = new Function('name', 'return `Hello, ${name}!`;');
