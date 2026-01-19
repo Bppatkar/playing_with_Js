@@ -1,10 +1,10 @@
-var foo = 10;
-function bar() {
-  console.log(foo); // undefined
-  var foo = 26;
-}
+// var foo = 10;
+// function bar() {
+//   console.log(foo); // undefined
+//   var foo = 26;
+// }
 
-bar();
+// bar();
 
 //! promise
 // const data = { name: 'bhanu', age: 25, admin: false };
@@ -720,19 +720,263 @@ bar();
 // };
 
 //! function declartion
-function greet(name) {
-  return `Hello ${name}`;
+// function greet(name) {
+//   return `Hello ${name}`;
+// }
+
+// //! function expression  // anonymouse or named
+// const greet = function (name) {
+//   return `Hello ${name}`;
+// };
+
+// //! Arrow function
+// const greet = (name) => {
+//   `Hello, ${name}`;
+// };
+
+// //! constructor function
+// const greet = new Function('name', 'return `Hello, ${name}!`;');
+
+//? closure
+// function outerFunc(outVar) {
+//   return function innerFunc(innerVar) {
+//     console.log('Outer Variable: ' + outVar);
+//     console.log('Inner Variable: ' + innerVar);
+//   };
+// }
+
+// const newFunc = outerFunc('outside');
+// newFunc('Inside');
+
+//! currying
+// const curry = (a) => {
+//   return (b) => {
+//     return (c) => {
+//       return a + b + c;
+//     };
+//   };
+// };
+// let ans = curry(2)(2)(2);
+// console.log(ans);
+//? with arrow
+// const addArrow = (a) => (b) => (c) => a + b + c;
+// console.log(addArrow(1)(2)(3));
+
+//! useFetch hook in react
+
+// const useFetch = (url) => {
+//   const [data, setData] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(false);
+
+//   const handleApi = async () => {
+//     setLoading(true);
+//     try {
+//       const apiRes = await fetch(url);
+//       const result = await apiRes.json();
+//       setData(result);
+//     } catch (error) {
+//       setError(error);
+//       console.log(error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     handleApi();
+//   }, [data]);
+
+//   return data;
+// };
+
+//! check empty object
+// function isEmptyObject(obj) {
+//   if (obj === null || typeof obj === 'object') return true;
+//   return Object.keys(obj).length === 0 && obj.constructor === Object;
+// }
+// console.log(isEmptyObject({})); // true
+// console.log(isEmptyObject({ a: 1 })); // false
+// console.log(isEmptyObject(new Date()));
+
+//! promise
+// const data = {
+//   name: 'Bhanu',
+//   age: 27,
+//   address: 'Jabera',
+// };
+
+// const fetchD = (data) => {
+//   return new Promise((resolve, reject) => {
+//     let success = true;
+//     if (success) {
+//       resolve(data);
+//     } else {
+//       reject(new Error('Something went wrong'));
+//     }
+//   });
+// };
+
+// fetchD(data)
+//   .then((d) => console.log(d))
+//   .catch(console.log('error'));
+
+//! complete promise
+
+// function fetchData() {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       const success = Math.random() > 0.5;
+//       if (success) {
+//         resolve('data Fetched successfully');
+//       } else {
+//         reject(new Error('Failed to fetch data'));
+//       }
+//     }, 1000);
+//   });
+// }
+
+// fetchData()
+//   .then((data) => console.log(data))
+//   .catch((err) => {
+//     console.error('error: ', err.message);
+//   })
+//   .finally(() => {
+//     console.log('Fetching operation finished');
+//   });
+
+//! callback
+// function processData(data, cb) {
+//   //..... processing data
+//   const ans = data.toUpperCase();
+//   cb(ans);
+// }
+// processData('bhanu Pratap', (result) => {
+//   console.log('Result is: ', result);
+// });
+
+//! async await
+// async () => {
+//   try {
+//     const data = await fetchData();
+//     console.log(data);
+//   } catch (error) {
+//     console.error('error in async function: ', error.message);
+//   } finally {
+//     console.log('Async Fetch operation finished');
+//   }
+// };
+
+//? handling error in async await
+// async function riskyOperation() {
+//   if (Math.random < 0.5) {
+//     throw new Error('Something went wrong');
+//   }
+//   return 'Success';
+// }
+
+// async function performTask() {
+//   try {
+//     const result = await riskyOperation();
+//     console.log(result);
+//   } catch (error) {
+//     console.error('Caught an error: ', error.message);
+//   }
+// }
+
+// performTask();
+
+//! POST method using fetch
+// async function postData(url = '', data = {}) {
+//   const response = await fetch(url, {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(data),
+//   });
+//   if (!response.ok) {
+//     throw new Error(`HTTP error! status: ${response.status}`);
+//   }
+//   return response.json();
+// }
+
+// postData('https://jsonplaceholder.typicode.com/posts', {
+//   title: 'test',
+//   body: 'test item',
+// })
+//   .then((data) => console.log(data))
+//   .catch((err) => console.error(err.message))
+//   .finally(() => {
+//     console.log('POST Method operation finished');
+//   });
+
+//! settimeout
+// setTimeout(() => {
+//   console.log(new Date().toLocaleString());
+// }, 1000);
+//! setInterval
+// setInterval(() => {
+//   console.log(new Date().toLocaleString());
+// }, 1000);
+
+//! ES6 Class
+// class Animal {
+//   constructor(name) {
+//     this.name = name;
+//   }
+//   speak() {
+//     console.log(`${this.name} makes a noise`);
+//   }
+// }
+// class Dog extends Animal {
+//   constructor(name, bread) {
+//     super(name);
+//     this.bread = bread;
+//   }
+//   speak() {
+//     console.log(`${this.name} bark`);
+//   }
+// }
+
+// const dog = new Dog('Rex', 'german');
+// dog.speak();
+
+//! Private members in ES6 Classes
+
+// class Counter {
+//   #count = 0;
+
+//   constructor(initialCount = 1) {
+//     this.#count = initialCount;
+//   }
+//   #increment() {
+//     this.#count++;
+//   }
+//   incrementPublic() {
+//     this.#increment();
+//   }
+//   getCount() {
+//     return this.#count;
+//   }
+// }
+// const c = new Counter();
+// c.incrementPublic();
+// console.log(c.getCount());
+
+//! Instanceof operator
+//? The instanceof operator tests whether the prototype property of a constructor appears anywhere in the prototype chain of an object.
+
+// function Car() {}
+// const myCar = new Car();
+
+// console.log(myCar instanceof Car); // true
+// console.log(myCar instanceof Object); // true
+// console.log([] instanceof Array); // true
+// console.log([] instanceof Object); // trye
+
+//! Prototype
+function Student(name, age) {
+  this.name = name;
+  this.age = age;
 }
-
-//! function expression  // anonymouse or named
-const greet = function (name) {
-  return `Hello ${name}`;
-};
-
-//! Arrow function
-const greet = (name) => {
-  `Hello, ${name}`;
-};
-
-//! constructor function
-const greet = new Function('name', 'return `Hello, ${name}!`;');
+let stu1 = new Student('bhanu', 27);
+console.log(stu1);
