@@ -974,9 +974,64 @@
 // console.log([] instanceof Object); // trye
 
 //! Prototype
-function Student(name, age) {
-  this.name = name;
-  this.age = age;
-}
-let stu1 = new Student('bhanu', 27);
-console.log(stu1);
+// function Student(name, age) {
+//   this.name = name;
+//   this.age = age;
+// }
+// let stu1 = new Student('bhanu', 27);
+// console.log(stu1);
+
+//?? NEW keyword
+// function createUser(name, score) {
+//   this.name = name;
+//   this.score = score;
+// }
+
+// createUser.prototype.scoreUpdate = function () {
+//   this.score++;
+// };
+
+// createUser.prototype.printMe = function () {
+//   console.log(`score is ${this.score}`);
+// };
+
+// let data1 = new createUser('samosa', 25);
+// // let data2 = new createUser('coffee', 250);
+
+// data1.printMe();
+
+//! __proto__
+
+// const User = {
+//   name: 'newUser',
+//   email: 'newUser@gmail.com',
+// };
+
+// const Teacher = {
+//   isAvailable: false,
+// };
+// const TASupport = {
+//   isAvailable: true,
+//   assignment: 'JS assignment',
+//   __proto__: Teacher,
+// };
+// const TeachingJob = {
+//   isAvailable: true,
+// };
+
+// Object.setPrototypeOf(TeachingJob, User);
+// // TeachingJob.__proto__ = User;
+// debugger;
+// console.log(TeachingJob);
+
+//? 2nd Example
+// let str = 'BHanu.....         ';
+// let newStr = "  sdlknfs fs flsf slfsl      "
+
+// String.prototype.trueLength = function () {
+//   console.log(this.trim().length);
+// };
+
+// newStr.trueLength();
+
+

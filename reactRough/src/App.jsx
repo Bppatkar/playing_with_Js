@@ -1,13 +1,13 @@
 import Mycomponent from './Mycomponent';
-import SendData from './SendData';
+import Check from './hooks/useRef';
 
 //! accessing data into react from express
 function App() {
   return (
-    <>
-      <Mycomponent />
-      <SendData />
-    </>
+    <div>
+      {/* <Mycomponent /> */}
+      <Check />
+    </div>
   );
 }
 
