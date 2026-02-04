@@ -10,6 +10,16 @@ const input = document.getElementById('inputData');
 //   };
 // };
 
+// const myFunc = (e) => {
+//   console.log(e.target.value);
+// };
+// input.addEventListener('input', debounce(myFunc, 500));
+
+// input.addEventListener('input', (e) => {
+//   console.log(e.target.value);
+// });
+// _____________________________________
+
 // const throttle = (func, delay) => {
 //   let shouldCall = true;
 //   return function (...args) {
@@ -22,24 +32,16 @@ const input = document.getElementById('inputData');
 //   };
 // };
 
-const throttle = (func, delay) => {
-  let lastCall = 0;
-  return function (...args) {
-    const now = new Date().getTime();
-    if(now - lastCall < delay){
-      
-    }
-  };
-};
+// const throttle = (func, delay) => {
+//   let lastCall = 0;
+//   return function (...args) {
+//     let now = Date.now();
+//     if (now - lastCall < delay){ return};
+//     lastCall = now;
+//     return func(...args);
+//   };
+// };
 
-const myFunc = function (e) {
-  const query = e.target.value;
-  console.log(query);
+// const myFunc = (e) => console.log(e.target.value);
+// input.addEventListener('input', throttle(myFunc, 500));
 
-  // fetch(`http://api.example.com/search?query=${query}`)
-  //   .then((res) => res.json())
-  //   .then((result) => console.log(result));
-};
-
-// input.addEventListener('input', debounce(myFunc, 500));
-input.addEventListener('input', throttle(myFunc, 500));

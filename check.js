@@ -971,7 +971,7 @@
 // console.log(myCar instanceof Car); // true
 // console.log(myCar instanceof Object); // true
 // console.log([] instanceof Array); // true
-// console.log([] instanceof Object); // trye
+// console.log([] instanceof Object); // true
 
 //! Prototype
 // function Student(name, age) {
@@ -1033,5 +1033,36 @@
 // };
 
 // newStr.trueLength();
+
+//! flatten obj
+// const flattenObject = (obj, prefix = '') =>
+//   Object.keys(obj).reduce((acc, key) => {
+//     const val = obj[key];
+//     const newKey = prefix ? `${prefix}.${key}` : key;
+//     return typeof val === 'object' && val !== null
+//       ? { ...acc, ...flattenObject(val, newKey) }
+//       : { ...acc, [newKey]: val };
+//   }, {});
+
+// const data = {
+//   a: 1,
+//   b: {
+//     c: 2,
+//     d: {
+//       e: 3,
+//     },
+//   },
+// };
+
+// console.log(flattenObject(data));
+// { a: 1, 'b.c': 2, 'b.d.e': 3 }
+
+//! palindrome
+// function palindrome(str) {
+//   str = str.trim().toLoweCase();
+//   let newStr = str.split('').reverse().join('');
+//   return cleanStr === reversedStr;
+// }
+
 
 
