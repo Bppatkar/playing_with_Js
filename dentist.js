@@ -250,7 +250,7 @@ const shallowCopy = { ...original };
 const deepCopy = JSON.parse(JSON.stringify(original));
 // deepCopy.details.age = 40; // This does NOT change original.details.age
 
-/* 
+/*
 console.log('Original:', original.details.age);
 console.log('Shallow:', shallowCopy.details.age);
 console.log('Deep:', deepCopy.details.age);
@@ -267,3 +267,4 @@ console.log(jsonString); // '{"id":1,"name":"Bhanu","active":true}'
 const parsedObj = JSON.parse(jsonString);
 console.log(parsedObj.name); // 'Bhanu'
  */
+
