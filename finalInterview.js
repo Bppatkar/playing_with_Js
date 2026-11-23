@@ -657,4 +657,455 @@ Object.setPrototypeOf(TeachingSupport, Teacher);
 console.log(TASupport.isTeaching); // true
 
 // ---------------------------------
+// Date 22Nov
+// ---------------------------------
+
+
+//! Server using Express JS
+
+// import express from 'express';
+
+const app = express();
+const PORT = 8000;
+
+// middleware
+app.use((req, res, next) => {
+  next();
+});
+
+app.use((err, req, res, next) => {
+  res.json({ message: "false", status: 500 });
+})
+
+// routing
+app.get('/', (req, res) => {
+  res.json("Welcome to homepage")
+});
+
+// healthCheck
+app.get('/health', (req, res) => {
+  res.send("checking health!!!!.....")
+})
+
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+
+// ---------------------------------
+//! indexing in database [MongoDB]
+db.socialMedia.createIndex({ title: 1 });
+
+//! Defining Schema
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  }
+}, { timeStamp: true });
+
+// ---------------------------------
+//! validation using JOI
+
+// const joi = require('joi');
+
+// defining schema
+const userValidationSchema = joi.object({
+  name: joi.string().min(4).max(10).required(),
+  email: joi.string().email().required(),
+  age: joi.number().integer().min(10).max(100),
+});
+
+// validate data
+const resultingData = userValidationSchema.validate({
+  name: "Bhanu Pratap",
+  email: "Bhanu@gmail.com",
+  age: 27,
+})
+
+if (resultingData.error) {
+  console.error(resultingData.error.default);
+} else {
+  console.error("Validation failed");
+}
+
+// ---------------------------------
+//! streams in node js
+// const fs = require('fs');
+// const { Transform, Duplex } = require('stream');
+
+const readableStream = fs.createReadStream("example.txt", 'utf-8');
+const transformStream = new Transform();
+
+transformStream._transform = function (chunck, encoding, cb) {
+  const upperCase = chunck.toString().toUpperCase();
+  cb(null, upperCase);
+}
+
+const writableStream = fs.createWriteStream('result.txt');
+
+const duplexStream = new Duplex({
+  read(size) { },
+
+  write(chunck, encoding, cb) {
+    console.log("Processing that data", chunck.toString());
+    this.push(chunck);
+    cb();
+  },
+});
+
+readableStream.pipe(duplexStream).pipe(transformStream).pipe(writableStream).on('finish', () => {
+  console.log("All Process is complete");
+});
+
+
+// ---------------------------------
+//! HOC [higher order components in react]
+
+// const HOC = (WrappedComponent) => {
+//   return (props) => {
+//     return <WrappedComponent {...props} />
+//   }
+// }
+
+// const MyComponent = ({ msg }) => {
+//   return (
+//     <div>
+//       <h1>Message: {msg}</h1>
+//     </div>
+//   )
+// }
+
+// const EnhancedComponent = HOC(MyComponent);
+
+// const App = () => {
+//   return (
+//     <div>
+//       <EnhancedComponent msg="hello from app" />
+//     </div>
+//   )
+// };
+
+// ---------------------------------
+//! adding function in prototype
+Array.prototype.customMap = function (cb) {
+  let result = [];
+
+  for (let i = 0; i < this.length; i++) {
+    result.push(cb(this[i], i, this));
+  }
+
+  return result;
+}
+
+
+//? example
+const numArr = [1, 2, 3, 4, 5, 6, 7, 8];
+const doubled = numArr.customMap(e => e * 2);
+// console.log(doubled);
+
+const square = numArr.customMap((num, idx) => {
+  return `Index ${idx}: ${num * num}`;
+})
+// console.log(square);
+
+// ---------------------------------
+//! DOCKERFILE for forntend
+// FROM node: 18
+// WORKDIR / app
+// COPY package *.json./
+// RUN npm install
+// COPY...
+// RUN npm run build
+// EXPOSE 8000
+// CMD['npx', 'serve', 'build']
+
+// ---------------------------------
+//! DOCKERFILE for Backend
+// FROM node:18
+// WORKDIR /app
+// COPY package*.json./
+// RUN npm install
+// COPY ...
+// RUN npm run build
+// EXPOSE 3000
+// CMD ['node', 'server.js']
+
+// ---------------------------------
+//! multer file upload
+// import multer from 'multer';
+const upload = multer({ dest: 'uploads/' });
+app.post('upload', upload.single('file'), (req, res) => {
+  res.send('file uploaded');
+})
+
+// ---------------------------------
+//! use Reducer syntax
+let initialState = {};
+function reducer(state, aciton) {
+  switch (aciton.type) {
+    case 'increment': state = state + aciton.payload;
+  }
+}
+const [state, dispatch] = useReducer(reducer, initialState);
+
+// ---------------------------------
+//! diff btw process.nextTick() and setImmediate()?
+// setImmediate(() => console.log("I run immediately"));
+// process.nextTick(() => console.log("But I run Before that"));
+
+// let count = 0;
+// const cb = () => {
+//   console.log(`Proccess nextTick cb ${++count}`);
+//   process.nextTick(cb);
+// };
+
+// setImmediate(() => console.log("setImmediate is called"));
+// setTimeout(() => console.log("Set timeout executed"), 100);
+// process.nextTick(cb);
+// console.log(start);
+
+
+// ---------------------------------
+//! custome error in express js
+class NotFoundError extends Error {
+  constructor(message) {
+    super(message);
+    this.status = 404;
+    this.name = "Not Found Error";
+  }
+}
+app.get("non_existingPage", (req, res, next) => { next(new NotFoundError("Page not found")) });
+
+
+// ---------------------------------
+//! authenticaiton and authrization using express js
+// import express from 'express';
+// import jwt from 'jsonwebtoken';
+
+// const app = express();
+// const PORT = 3000;
+
+app.use(express.json());
+const SECRET_KEY = 'secret_key';
+
+// const user = {
+//   id: Math.random() + 1 * 10,
+//   userName: 'username',
+//   userPass: 'pass1234'
+// }
+
+// app.post('/login', (req, res) => {
+//   try {
+//     const { username, pass } = req.body;
+//     if (!username && !pass) {
+//       return req.json({ message: 'All fields are required', status: 404 });
+//     }
+//     const user = await User.find(u => u.username === username && u.userPass === pass);
+//     if (!user) {
+//       return req.json({ message: "User not found", status: 404 })
+//     };
+//     const token = jwt.sign({ userData: user.id }, SECRET_KEY, { expiresIn: '1h' });
+
+//     res.json({
+//       message: 'Login successfull',
+//       status: 200,
+//       token,
+//       user: { id: user.id, userName: user.userName }
+//     })
+//   } catch (error) {
+//     console.error("Login error:", error);
+//     res.status(500).json({
+//       message: "Internal server error",
+//       status: 500
+//     })
+//   }
+// })
+
+// const AuthenticateToken = (req, res, next) => {
+//   const header = req.headers['authentication'];
+//   const token = header && header.split(' ')[1];
+
+//   if (!token) {
+//     return res.status(401).json({
+//       message: 'Access token required',
+//       status: 401
+//     })
+//   }
+
+//   jwt.verify(token, SECRET_KEY, (err, user) => {
+//     if (err) {
+//       return res.status(401).json({
+//         message: 'Invalid or expired token',
+//         status: 403
+//       })
+//     }
+//     req.user = user;
+//     next();
+//   })
+// }
+// app.listen(PORT, () => {
+//   console.log("Server is running");
+// })
+
+
+// ---------------------------------
+//! mongodb database connection in node and express
+const connectDB = async () => {
+  try {
+    await mongoose.connect(URL);
+    console.log("Database connected Successfully");
+  } catch (error) {
+    console.error(error)
+  }
+}
+// connectDB();
+
+
+// ---------------------------------
+//! performing CRUD in moongoose ODM for User modal
+// const newUser = new User({
+//   userName: "Bhanu",
+//   email: 'b@gmail.com'
+// })
+
+// newUser.save();
+// // or
+// const newUser1 = new User.create({
+//   userName: "Bhanu1",
+//   email: 'b1@gmail.com'
+// });
+
+// //? Read
+// User.find({ age: { $gt: 21 } }).then((user) => console.log(user)).catch((err) => console.error(err));
+
+// //? Update
+// User.updateOne({ userName: 'bhanu' }, { $set: { age: 20 } }).then((user) => console.log(user)).catch((err) => console.error(err));
+
+// User.findByIdAndUpdate(
+//   'bibgf23r',
+//   { email: 'newEmail@gmail.com' },
+//   { new: true }
+// ).then((user) => console.log(user)).catch((err) => console.error(err));
+
+// //? Delete
+// User.deleteOne({ username: 'bhanu' }).then((result) => console.log("Deleted result", result)).catch((err) => console.error(err));
+
+// ---------------------------------
+//! mongodb index
+// const userSchema = new mongoose.Schema(
+//   {
+//     email: {
+//       type: string,
+//       required: true,
+//     },
+//     userName: {
+//       type: string,
+//     },
+//   },
+//   { timeStamp: true }
+// );
+
+// export const User = mongoose.model('User', userSchema);
+// userSchema.index({ email: 1 });
+
+// ---------------------------------
+//! population in mongodb
+const postSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+  { timeStamp: true }
+);
+const Post = moongoose.model('Post', postSchema);
+
+Post.findById('anyPostId')
+  .populate('author', 'username email') // populate author field , select only 'username' and 'email
+  .exec((err, post) => {
+    if (err) console.error(err);
+    else console.log(post);
+    console.log(post.author.username); // Access user data directly
+    console.log(post.author.email);
+  });
+
+
+// ---------------------------------
+//! transactions in mongodb
+const session = await mongoose.startSession();
+session.startTransaction();
+
+try {
+  await Account.updateOne(
+    { _id: 'AccountA' },
+    { $inc: { balance: -100 } },
+    { session }
+  );
+  await Account.updateOne(
+    { _id: 'AccountB' },
+    { $inc: { balance: 100 } },
+    { session }
+  );
+
+  await session.commitTransactions();
+  console.log('successfully transfered');
+} catch (error) {
+  await session.abortTransaction();
+  console.error(error);
+} finally {
+  session.endSesssion();
+}
+
+// ---------------------------------
+//! refrencing in mongodb
+id: {
+  type: mogoose.Schema.types.ObjectId;
+  // ref:  // something
+}
+
+// ---------------------------------
+//! serving static file in express
+// const path = required('path');
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ---------------------------------
+//! express router
+// import express from 'express';
+const router = express.Router();
+router.get('/about', aboutController);
+
+// ---------------------------------
+//! testing
+describe('GET /api/item', () => {
+  it('should return a list of items', async () => {
+    const res = await requestAnimationFrame(app).get('api/items');
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toBeInstanceOf(Array);
+  })
+})
+
+// ---------------------------------
+//! useFetch hook in react
+
+const useFetch = (url) => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleApi = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      setData(data);
+    } catch (err) {
+      setError(error);
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => { handleApi() }, [data]);
+  return data;
+}
 

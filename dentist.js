@@ -247,7 +247,8 @@ const shallowCopy = { ...original };
 // shallowCopy.details.age = 30; // This would change original.details.age too
 
 // Deep Copy: All levels are copied. No references are shared.
-const deepCopy = JSON.parse(JSON.stringify(original));
+const deepCopy = structuredClone(original);
+// const deepCopy = JSON.parse(JSON.stringify(original));
 // deepCopy.details.age = 40; // This does NOT change original.details.age
 
 /*
